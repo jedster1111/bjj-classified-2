@@ -1,0 +1,10 @@
+{
+  "eslint.workingDirectories": [
+    "common",
+    "frontend"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": [
+    "pino"
+  ]
+}

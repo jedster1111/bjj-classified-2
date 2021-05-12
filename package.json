@@ -1,0 +1,18 @@
+{
+  "name": "bjj-classified",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jed Thompson <jedster1111@hotmail.co.uk>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "moves-service",
+      "common",
+      "frontend"
+    ]
+  },
+  "devDependencies": {
+    "typescript": "^4.2.4"
+  }
+}

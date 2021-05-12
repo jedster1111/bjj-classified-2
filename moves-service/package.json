@@ -1,0 +1,39 @@
+{
+  "name": "moves-service",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/koa": "^2.13.1",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-router": "^7.4.2",
+    "@types/koa__cors": "^3.0.2",
+    "@types/pino": "^6.3.8",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.3.0",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "common": "1.0.0",
+    "dotenv": "^9.0.2",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.0.0",
+    "pino": "^6.11.3",
+    "pino-pretty": "^4.8.0",
+    "uuidv4": "^6.2.8"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "build:watch": "yarn build --watch",
+    "run:dev": "nodemon -r dotenv/config ./dist/index.js",
+    "lint": "eslint './src/**/*.{js,ts,tsx}'",
+    "lint:fix": "yarn lint --fix"
+  }
+}
