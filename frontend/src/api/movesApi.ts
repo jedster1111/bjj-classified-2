@@ -1,4 +1,5 @@
 import { Move } from "common";
+import { wait } from "./asyncUtils";
 
 const mockMoves: Move[] = [
   {
@@ -11,8 +12,17 @@ const mockMoves: Move[] = [
   },
 ];
 
-const fetchMoves = () => mockMoves;
+const fetchMoves = async () => {
+  await wait(1000);
+  return mockMoves;
+};
+
+const fetchMove = async (moveId: string) => {
+  await wait(1000);
+  return mockMoves.find((move) => move.id === moveId);
+};
 
 export const movesApi = {
   fetchMoves,
+  fetchMove,
 };

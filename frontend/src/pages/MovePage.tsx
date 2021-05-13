@@ -1,11 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useAppSelector } from "../redux/typedHooks";
+import { useMove } from "../redux/moves/useMove";
 
 export const MovePage = () => {
   const { id } = useParams<{ id: string }>();
 
-  const move = useAppSelector((state) => state.moves.movesByGuid[id]);
+  const { move, movesLoadingState } = useMove(id);
+
+  if (movesLoadingState === "initial" || movesLoadingState === "loading")
+    return <div>Loading...</div>;
 
   if (!move) return <div>Move not found</div>;
 
