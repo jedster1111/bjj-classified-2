@@ -7,12 +7,14 @@ type MovesSlice = {
   movesByGuid: { [guid: string]: Move };
   moveGuids: string[];
   loadingState: "initial" | "loading" | "loaded";
+  fullMovesLoaded: boolean;
 };
 
 const initialState: MovesSlice = {
   movesByGuid: {},
   moveGuids: [],
   loadingState: "initial",
+  fullMovesLoaded: false,
 };
 
 const movesReceived: CaseReducer<MovesSlice, PayloadAction<Move[]>> = (
@@ -30,6 +32,7 @@ const movesReceived: CaseReducer<MovesSlice, PayloadAction<Move[]>> = (
   );
 
   state.loadingState = "loaded";
+  state.fullMovesLoaded = true;
 };
 
 const moveReceived: CaseReducer<MovesSlice, PayloadAction<Move | undefined>> = (

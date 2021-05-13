@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { fetchMoves } from "./movesSlice";
 import { useAppDispatch, useAppSelector } from "../typedHooks";
@@ -6,15 +6,15 @@ import { useAppDispatch, useAppSelector } from "../typedHooks";
 export const useMoves = () => {
   const dispatch = useAppDispatch();
   const movesLoadingState = useAppSelector((state) => state.moves.loadingState);
-
-  const [hasLoaded, setHasLoaded] = useState(false);
+  const fullMovesLoaded = useAppSelector(
+    (state) => state.moves.fullMovesLoaded
+  );
 
   useEffect(() => {
-    if (!hasLoaded) {
+    if (!fullMovesLoaded) {
       dispatch(fetchMoves());
-      setHasLoaded(true);
     }
-  }, [hasLoaded, dispatch]);
+  }, [fullMovesLoaded, dispatch]);
 
   const moves = useAppSelector((state) =>
     state.moves.moveGuids.map((moveGuid) => state.moves.movesByGuid[moveGuid])
