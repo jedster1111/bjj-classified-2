@@ -55,5 +55,11 @@ module.exports = {
     port: 8080,
     publicPath: "/",
     historyApiFallback: true,
+    proxy: {
+      "/api": {
+        target: "http://localhost:8000",
+        pathRewrite: { "^/api": "" },
+      },
+    },
   },
 };

@@ -33,14 +33,16 @@ router.get("move", "/move/:id", (ctx) => {
   const move = moves.find((move) => move.id === moveId);
 
   if (!move) {
-    ctx.throw(404, `Could not find move with id ${moveId}`);
+    ctx.status = 404;
+    ctx.body = `Could not find move with id ${moveId}`;
+    return;
   }
 
   ctx.body = move;
 });
 
-router.get("error", "/error", async (ctx) => {
-  ctx.throw("This is an endpoint to test error handling!");
+router.get("error", "/error", async () => {
+  throw new Error("Test error!");
 });
 
 const port = 8000;
@@ -51,6 +53,10 @@ app.use(cors());
 
 app.use(bodyParser());
 app.use(router.routes()).use(router.allowedMethods());
+
+app.on("error", (err) => {
+  logger.info(err, "Encountered an error!");
+});
 
 async function main() {
   logger.info("BJJ Classified: db-accessor initializing");

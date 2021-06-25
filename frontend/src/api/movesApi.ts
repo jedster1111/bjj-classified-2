@@ -1,25 +1,20 @@
+import axios from "axios";
 import { Move } from "common";
-import { wait } from "./asyncUtils";
 
-const mockMoves: Move[] = [
-  {
-    id: "1",
-    name: "Triangle Choke",
-  },
-  {
-    id: "2",
-    name: "Armbar",
-  },
-];
+import { wait } from "./asyncUtils";
 
 const fetchMoves = async () => {
   await wait(1000);
-  return mockMoves;
+
+  const result = await axios.get<Move[]>("/api/moves");
+  return result.data;
 };
 
 const fetchMove = async (moveId: string) => {
   await wait(1000);
-  return mockMoves.find((move) => move.id === moveId);
+
+  const result = await axios.get<Move>(`/api/move/${moveId}`);
+  return result.data;
 };
 
 export const movesApi = {
