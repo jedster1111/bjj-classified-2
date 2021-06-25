@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useMoves } from "../redux/moves/useMoves";
+import { movesApi } from "../api/movesApi";
+import { useFetch } from "../hooks/useFetch";
 
 export const MovesPage = () => {
-  const { moves, movesLoadingState } = useMoves();
+  const { data: moves = [], isLoading } = useFetch(movesApi.fetchMoves);
   return (
     <div>
       <p>Moves Page</p>
-      {movesLoadingState === "initial" || movesLoadingState === "loading" ? (
+      {isLoading ? (
         <div>Loading...</div>
       ) : (
         <ul>

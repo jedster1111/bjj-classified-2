@@ -1,15 +1,19 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useMove } from "../redux/moves/useMove";
+import { movesApi } from "../api/movesApi";
+import { useFetch } from "../hooks/useFetch";
 
 export const MovePage = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { move, movesLoadingState } = useMove(id);
+  const {
+    data: move,
+    error,
+    isLoading,
+  } = useFetch(() => movesApi.fetchMove(id), [id]);
 
-  if (movesLoadingState === "initial" || movesLoadingState === "loading")
-    return <div>Loading...</div>;
-
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error while loading move!</div>;
   if (!move) return <div>Move not found</div>;
 
   return (

@@ -19,6 +19,13 @@ router.get("meaningOfLife", "/meaningOfLife", (ctx) => {
   ctx.body = `The meaning of life is ${meaningOfLife()}`;
 });
 
+router.get("moves", "/moves", (ctx) => {
+  ctx.body = [
+    { id: 1, name: "Triangle Choke" },
+    { id: 2, name: "Armbar" },
+  ];
+});
+
 router.get("error", "/error", async (ctx) => {
   ctx.throw("This is an endpoint to test error handling!");
 });
