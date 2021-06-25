@@ -4,7 +4,7 @@ import bodyParser from "koa-bodyparser";
 import KoaRouter from "koa-router";
 import pino from "pino";
 
-import { meaningOfLife } from "common";
+import { meaningOfLife, Move } from "common";
 
 const logger = pino({
   prettyPrint: {
@@ -19,11 +19,24 @@ router.get("meaningOfLife", "/meaningOfLife", (ctx) => {
   ctx.body = `The meaning of life is ${meaningOfLife()}`;
 });
 
+const moves: Move[] = [
+  { id: "1", name: "Triangle Choke" },
+  { id: "2", name: "Armbar" },
+];
+
 router.get("moves", "/moves", (ctx) => {
-  ctx.body = [
-    { id: 1, name: "Triangle Choke" },
-    { id: 2, name: "Armbar" },
-  ];
+  ctx.body = moves;
+});
+
+router.get("move", "/move/:id", (ctx) => {
+  const moveId = ctx.params.id;
+  const move = moves.find((move) => move.id === moveId);
+
+  if (!move) {
+    ctx.throw(404, `Could not find move with id ${moveId}`);
+  }
+
+  ctx.body = move;
 });
 
 router.get("error", "/error", async (ctx) => {
@@ -33,17 +46,6 @@ router.get("error", "/error", async (ctx) => {
 const port = 8000;
 
 const app = new Koa();
-
-app.use(async (ctx, next) => {
-  try {
-    await next();
-  } catch (err) {
-    logger.error(err as Error, "Error encountered!");
-
-    ctx.status = err.status || 500;
-    ctx.body = err.message;
-  }
-});
 
 app.use(cors());
 
