@@ -45,8 +45,7 @@ router.get("meaningOfLife", "/meaningOfLife", (ctx) => {
 
 router.get("moves", "/moves", async (ctx) => {
   const dbMoves = await MoveData.query();
-  const testing = dbMoves[0];
-  ctx.body = testing;
+  ctx.body = dbMoves;
 });
 
 router.get("move", "/move/:id", async (ctx) => {
