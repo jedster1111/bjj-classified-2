@@ -1,27 +1,34 @@
 import { useState, useEffect } from "react";
+import { RequestResponses, NetworkError, RequestError } from "../api/doFetch";
 
-export const useFetch = <T>(
-  makeRequest: () => Promise<T>,
+export const useFetch = <Data>(
+  makeRequest: () => Promise<RequestResponses<Data>>,
   dependencies: unknown[] = []
 ) => {
-  const [data, setData] = useState<T>();
-  const [error, setError] = useState<Error>();
+  const [data, setData] = useState<Data>();
+  const [error, setError] = useState<NetworkError | RequestError>();
   const [isLoading, setIsLoading] = useState(true);
 
   let isMounted = true;
   useEffect(() => {
     const doRequest = async () => {
-      try {
-        setIsLoading(true);
-        const response = await makeRequest();
+      setIsLoading(true);
+      setError(undefined);
+      setData(undefined);
+      const response = await makeRequest();
 
-        if (isMounted) {
-          setData(response);
-          setError(undefined);
-          setIsLoading(false);
+      if (isMounted) {
+        if (
+          response.type === "networkFailure" ||
+          response.type === "requestError"
+        ) {
+          setError(response);
         }
-      } catch (e) {
-        setError(e);
+
+        if (response.type === "requestSuccess") {
+          setData(response.data);
+        }
+
         setIsLoading(false);
       }
     };

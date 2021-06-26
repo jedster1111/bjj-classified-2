@@ -13,7 +13,13 @@ export const MovePage = () => {
   } = useFetch(() => movesApi.fetchMove(id), [id]);
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error while loading move!</div>;
+  if (error) {
+    if (error.type === "requestError" && error.status === 404) {
+      return <div>Unable to find move.</div>;
+    } else {
+      return <div>Something went wrong while fetching move.</div>;
+    }
+  }
   if (!move) return <div>Move not found</div>;
 
   return (

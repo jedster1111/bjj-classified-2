@@ -1,20 +1,18 @@
-import axios from "axios";
 import { Move } from "common";
 
 import { wait } from "./asyncUtils";
+import { doFetch } from "./doFetch";
 
 const fetchMoves = async () => {
   await wait(1000);
 
-  const result = await axios.get<Move[]>("/api/moves");
-  return result.data;
+  return doFetch<Move[]>("/api/moves");
 };
 
 const fetchMove = async (moveId: string) => {
   await wait(1000);
 
-  const result = await axios.get<Move>(`/api/move/${moveId}`);
-  return result.data;
+  return await doFetch<Move>(`/api/move/${moveId}`);
 };
 
 export const movesApi = {
