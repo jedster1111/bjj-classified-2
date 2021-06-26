@@ -11,6 +11,7 @@
       "composite": true,
       "esModuleInterop": true,
       "sourceMap": true,
-      "declarationMap": true
+      "declarationMap": true,
+      "noImplicitOverride": true
   }
 }

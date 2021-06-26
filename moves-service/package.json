@@ -22,9 +22,12 @@
     "@koa/cors": "^3.1.0",
     "common": "1.0.0",
     "dotenv": "^9.0.2",
+    "knex": "<0.95.0",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.0.0",
+    "mysql2": "^2.2.5",
+    "objection": "^2.2.15",
     "pino": "^6.11.3",
     "pino-pretty": "^4.8.0",
     "uuidv4": "^6.2.8"

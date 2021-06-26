@@ -3,14 +3,38 @@ import cors from "@koa/cors";
 import bodyParser from "koa-bodyparser";
 import KoaRouter from "koa-router";
 import pino from "pino";
+import { Model } from "objection";
+import Knex from "knex";
 
-import { meaningOfLife, Move } from "common";
+import { meaningOfLife } from "common";
 
 const logger = pino({
   prettyPrint: {
     colorize: true,
   },
 });
+
+const knex = Knex({
+  client: "mysql2",
+  connection: {
+    host: "127.0.0.1",
+    port: 8001,
+    user: "root",
+    password: "p@ssw0rd1",
+    database: "bjj_classified",
+  },
+});
+
+Model.knex(knex);
+
+class MoveData extends Model {
+  id!: number;
+  name!: string;
+
+  static override get tableName() {
+    return "moves";
+  }
+}
 
 const router = new KoaRouter();
 
@@ -19,26 +43,23 @@ router.get("meaningOfLife", "/meaningOfLife", (ctx) => {
   ctx.body = `The meaning of life is ${meaningOfLife()}`;
 });
 
-const moves: Move[] = [
-  { id: "1", name: "Triangle Choke" },
-  { id: "2", name: "Armbar" },
-];
-
-router.get("moves", "/moves", (ctx) => {
-  ctx.body = moves;
+router.get("moves", "/moves", async (ctx) => {
+  const dbMoves = await MoveData.query();
+  const testing = dbMoves[0];
+  ctx.body = testing;
 });
 
-router.get("move", "/move/:id", (ctx) => {
+router.get("move", "/move/:id", async (ctx) => {
   const moveId = ctx.params.id;
-  const move = moves.find((move) => move.id === moveId);
+  const dbMove = await MoveData.query().findById(moveId);
 
-  if (!move) {
+  if (!dbMove) {
     ctx.status = 404;
     ctx.body = `Could not find move with id ${moveId}`;
     return;
   }
 
-  ctx.body = move;
+  ctx.body = dbMove;
 });
 
 router.get("error", "/error", async () => {
