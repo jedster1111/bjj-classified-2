@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { movesApi } from "../api/movesApi";
-import { useFetch } from "../hooks/useFetch";
+import { movesApi } from "../../api/movesApi";
+import { useFetch } from "../../hooks/useFetch";
 
 export const MovesPage = () => {
   const { data: moves = [], isLoading } = useFetch(movesApi.fetchMoves);

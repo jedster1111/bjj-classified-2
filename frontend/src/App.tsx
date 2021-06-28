@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { meaningOfLife } from "common";
 import { Header } from "./components/Header";
-import { MovesPage } from "./pages/MovesPage";
-import { MovePage } from "./pages/MovePage";
+import { MovesPage } from "./pages/MovesPage/MovesPage";
+import { MovePage } from "./pages/MovePage/MovePage";
 
 function App() {
   return (
