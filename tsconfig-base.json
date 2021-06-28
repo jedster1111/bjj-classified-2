@@ -12,6 +12,7 @@
       "esModuleInterop": true,
       "sourceMap": true,
       "declarationMap": true,
-      "noImplicitOverride": true
+      "noImplicitOverride": true,
+      // "noUncheckedIndexedAccess": true
   }
 }

@@ -4,6 +4,15 @@ import { Video } from "common";
 import { useRef } from "react";
 import { useState } from "react";
 
+function secondsToMinutes(seconds: number): string {
+  const minutes = ~~(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  if (!minutes) return `${remainingSeconds}s`;
+
+  return `${minutes}:${remainingSeconds}`;
+}
+
 export const VideoPlayer = ({ video }: { video: Video }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -30,7 +39,7 @@ export const VideoPlayer = ({ video }: { video: Video }) => {
                   setIsPlaying(true);
                 }}
               >
-                {event.move.name} at {event.timestamp}
+                {event.move.name} at {secondsToMinutes(event.timestamp)}
               </button>
             </li>
           ))}

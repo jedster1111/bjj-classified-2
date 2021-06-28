@@ -2,20 +2,19 @@ import Koa from "koa";
 import cors from "@koa/cors";
 import bodyParser from "koa-bodyparser";
 import KoaRouter from "koa-router";
-import pino from "pino";
 import { Model } from "objection";
 import Knex from "knex";
+import koaPinoLogger from "koa-pino-logger";
 
 import { meaningOfLife } from "common";
 import { MoveData } from "./data/MoveData";
 import { VideoData } from "./data/VideoData";
 import { EventData } from "./data/EventData";
 
-const logger = pino({
-  prettyPrint: {
-    colorize: true,
-  },
+const loggerMiddleware = koaPinoLogger({
+  prettyPrint: { colorize: true, translateTime: true },
 });
+const logger = loggerMiddleware.logger;
 
 const knex = Knex({
   client: "mysql2",
@@ -44,6 +43,11 @@ router.get("moves", "/moves", async (ctx) => {
 
 router.get("move", "/moves/:id", async (ctx) => {
   const moveId = ctx.params.id;
+
+  if (!moveId) {
+    ctx.throw(400, "Missing moveId");
+  }
+
   const dbMove = await MoveData.query().findById(moveId);
 
   if (!dbMove) {
@@ -52,20 +56,20 @@ router.get("move", "/moves/:id", async (ctx) => {
     return;
   }
 
-  console.log("Move", dbMove);
-
   ctx.body = dbMove;
 });
 
 router.get("moveVideos", "/moves/:id/videos", async (ctx) => {
   const moveId = ctx.params.id;
 
+  if (!moveId) {
+    ctx.throw(400, "Missing moveId");
+  }
+
   const dbVideos = await VideoData.query()
     .joinRelated("events")
     .where("events.moveId", moveId)
     .withGraphFetched("events.move");
-
-  console.log(dbVideos);
 
   ctx.body = dbVideos;
 });
@@ -89,14 +93,12 @@ const port = 8000;
 
 const app = new Koa();
 
+app.use(loggerMiddleware);
+
 app.use(cors());
 
 app.use(bodyParser());
 app.use(router.routes()).use(router.allowedMethods());
-
-app.on("error", (err) => {
-  logger.info(err, "Encountered an error!");
-});
 
 async function main() {
   logger.info("BJJ Classified: db-accessor initializing");
