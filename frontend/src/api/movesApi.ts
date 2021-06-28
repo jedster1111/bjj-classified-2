@@ -12,7 +12,7 @@ const fetchMoves = async () => {
 const fetchMove = async (moveId: string) => {
   await wait(1000);
 
-  return await doFetch<Move>(`/api/move/${moveId}`);
+  return await doFetch<Move>(`/api/moves/${moveId}`);
 };
 
 export const movesApi = {

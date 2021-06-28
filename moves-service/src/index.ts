@@ -7,6 +7,9 @@ import { Model } from "objection";
 import Knex from "knex";
 
 import { meaningOfLife } from "common";
+import { MoveData } from "./data/MoveData";
+import { VideoData } from "./data/VideoData";
+import { EventData } from "./data/EventData";
 
 const logger = pino({
   prettyPrint: {
@@ -27,15 +30,6 @@ const knex = Knex({
 
 Model.knex(knex);
 
-class MoveData extends Model {
-  id!: number;
-  name!: string;
-
-  static override get tableName() {
-    return "moves";
-  }
-}
-
 const router = new KoaRouter();
 
 router.get("meaningOfLife", "/meaningOfLife", (ctx) => {
@@ -48,7 +42,7 @@ router.get("moves", "/moves", async (ctx) => {
   ctx.body = dbMoves;
 });
 
-router.get("move", "/move/:id", async (ctx) => {
+router.get("move", "/moves/:id", async (ctx) => {
   const moveId = ctx.params.id;
   const dbMove = await MoveData.query().findById(moveId);
 
@@ -58,7 +52,33 @@ router.get("move", "/move/:id", async (ctx) => {
     return;
   }
 
+  console.log("Move", dbMove);
+
   ctx.body = dbMove;
+});
+
+router.get("moveVideos", "/moves/:id/videos", async (ctx) => {
+  const moveId = ctx.params.id;
+
+  const dbVideos = await VideoData.query()
+    .joinRelated("events")
+    .where("events.moveId", moveId)
+    .withGraphFetched("events.move");
+
+  console.log(dbVideos);
+
+  ctx.body = dbVideos;
+});
+
+router.get("events", "/events", async (ctx) => {
+  const dbEvents = await EventData.query().withGraphFetched("[move, video]");
+
+  ctx.body = dbEvents;
+});
+
+router.get("videos", "/videos", async (ctx) => {
+  const dbVideos = await VideoData.query();
+  ctx.body = dbVideos;
 });
 
 router.get("error", "/error", async () => {
