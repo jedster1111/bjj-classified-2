@@ -54,11 +54,13 @@ export const VideoPlayer = ({ video, onFinishEvents }: VideoPlayerProps) => {
       currentEventIndex !== -1 &&
       currentEventIndex !== lastCurrentEventIndex
     ) {
+      console.log("Setting last event", currentEventIndex);
       setLastCurrentEventIndex(currentEventIndex);
       return;
     }
 
     if (lastCurrentEventIndex === undefined) {
+      console.log("Moving to first event");
       seekToTime(video.events[0].startTimestamp);
       return;
     }
@@ -69,6 +71,7 @@ export const VideoPlayer = ({ video, onFinishEvents }: VideoPlayerProps) => {
       const nextEvent = video.events[lastCurrentEventIndex + 1];
 
       if (!nextEvent) {
+        console.log("Finished events");
         onFinishEvents();
         return;
       }
@@ -115,6 +118,7 @@ export const VideoPlayer = ({ video, onFinishEvents }: VideoPlayerProps) => {
         onPause={() => setIsPlaying(false)}
         onProgress={({ playedSeconds }) => setCurrentTime(playedSeconds)}
         playing={isPlaying}
+        progressInterval={350}
       />
       <div>
         <span>Events</span>
