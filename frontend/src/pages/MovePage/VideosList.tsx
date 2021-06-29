@@ -42,7 +42,10 @@ export const VideosList = ({ moveId }: { moveId: string }) => {
         </button>
       </div>
       <div>
-        <VideoPlayer video={currentlySelectedVideo} />
+        <VideoPlayer
+          video={currentlySelectedVideo}
+          onFinishEvents={() => setVideoNumber((prevValue) => prevValue + 1)}
+        />
       </div>
     </div>
   );

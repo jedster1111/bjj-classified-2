@@ -8,7 +8,8 @@ export type Event = {
   moveId: number;
   videoId: number;
   move: Move;
-  timestamp: number;
+  startTimestamp: number;
+  endTimestamp: number;
 };
 
 export type Video = {
